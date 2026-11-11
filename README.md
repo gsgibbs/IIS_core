@@ -114,9 +114,8 @@ iis-core/
 ## Citation
 
 If you use this code, please cite:
-
-> <Author>. *Information Interaction Structure (IIS).* GitHub repository, 2026.
+GS.Gibbs et. al *Information Interaction Structure (IIS).* GitHub repository, 2026.
 
 ## Author
 
-<Your Name> — PhD Candidate, Biomedical Data Science, Meharry Medical College.
+Gregory Gibbs — PhD Candidate, Biomedical Data Science, Meharry Medical College.
