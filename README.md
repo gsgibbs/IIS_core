@@ -42,67 +42,12 @@ python iis_core.py --reps 20 --n 500 --B 50 --seed 1 --out my_results
 python iis_core.py --help
 ```
 
-### Use on your own data
-
-```python
-import numpy as np
-from iis_core import iis
-
-X = np.loadtxt("my_data.csv", delimiter=",")       # shape (n samples, N variables)
-out = iis(X, kind="continuous", B=100, rng=np.random.default_rng(0))
-
-out["Z"]       # Z_total: read the structure only if > 3
-out["a"]       # normalized spectrum a_2 .. a_N
-out["A_star"]  # calibrated mass per order (bits)
-out["A"]       # raw mass per order (bits)
-out["noise"]   # noise floor per order (bits)
-```
-
-Use `kind="discrete"` for categorical data. The cost grows as $2^N$ (every subset of variables is evaluated), so the core pipeline is intended for small $N$.
 
 ### Notebook
 
 [`notebooks/IIS_core.ipynb`](notebooks/IIS_core.ipynb) contains the same pipeline step by step, with the tables inline.
 
-## Validation results
 
-Benchmarks: Gaussian IID (no structure), Correlated Gaussian (AR(1), $\rho = 0.6$), Shared Ancestry (latent common cause), XOR Epistasis (pure $N$-way synergy). Defaults as above, seed 2026.
-
-**Structure recovery** (mean [95% range] over datasets with $Z_{total} > 3$):
-
-| Benchmark | median $Z_{total}$ | $a_2$ | $a_3$ | $a_4$ | $a_5$ |
-|---|---|---|---|---|---|
-| Gaussian IID | −0.35 | below noise | below noise | below noise | below noise |
-| Correlated Gaussian | 669 | 0.738 [0.695, 0.806] | 0.210 [0.170, 0.233] | 0.047 [0.023, 0.065] | 0.006 [0.002, 0.009] |
-| *exact* | | *0.738* | *0.210* | *0.047* | *0.005* |
-| Shared Ancestry | 299 | 0.597 [0.576, 0.618] | 0.279 [0.264, 0.291] | 0.105 [0.090, 0.122] | 0.020 [0.013, 0.029] |
-| *exact* | | *0.589* | *0.286* | *0.104* | *0.020* |
-| XOR Epistasis | 185 | 0.002 [0.000, 0.009] | 0.002 [0.000, 0.010] | 0.001 [0.000, 0.004] | 0.996 [0.981, 1.000] |
-| *exact* | | *0* | *0* | *0* | *1* |
-
-**Step 2 accuracy.** Subset entropies are within about 0.02 bits of exact on average at every group size. There is a small downward bias that grows with $\lvert S\rvert$, which is expected of both estimators at finite $n$.
-
-All tables: [`results/`](results/)
-
-| File | Contents |
-|---|---|
-| `table_step2_entropies.csv` | Estimated vs exact $H(S)$, by group size |
-| `table_architecture_mass.csv` | Raw mass, noise floor, calibrated mass and exact mass, by order |
-| `table_iis_structure_core.csv` | $Z_{total}$ and normalized spectrum vs exact |
-
-## Repository layout
-
-```
-iis-core/
-├── iis_core.py            # pipeline + validation script
-├── notebooks/
-│   └── IIS_core.ipynb     # same pipeline, step by step
-├── docs/
-│   └── METHOD.md          # formulas and benchmark definitions
-├── results/               # tables produced by iis_core.py
-├── requirements.txt
-└── README.md
-```
 
 ## Known limitations
 
@@ -114,7 +59,7 @@ iis-core/
 ## Citation
 
 If you use this code, please cite:
-GS.Gibbs et. al *Information Interaction Structure (IIS).* GitHub repository, 2026.
+G.S.Gibbs et. al *Information Interaction Structure (IIS).* GitHub repository, 2026.
 
 ## Author
 
